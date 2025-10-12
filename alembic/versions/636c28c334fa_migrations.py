@@ -1,8 +1,8 @@
-"""add_tables
+"""migrations
 
-Revision ID: 4f98123cbb2f
-Revises: 4c3a93628666
-Create Date: 2025-10-11 00:31:45.295151
+Revision ID: 636c28c334fa
+Revises: 
+Create Date: 2025-10-12 11:34:03.675320
 
 """
 from typing import Sequence, Union
@@ -12,8 +12,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision: str = '4f98123cbb2f'
-down_revision: Union[str, Sequence[str], None] = '4c3a93628666'
+revision: str = '636c28c334fa'
+down_revision: Union[str, Sequence[str], None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
 
@@ -34,10 +34,11 @@ def upgrade() -> None:
     )
     op.create_index(op.f('ix_menus_menu_date'), 'menus', ['menu_date'], unique=True)
     op.create_table('users',
-    sa.Column('id', sa.Integer(), nullable=False),
+    sa.Column('id', sa.BigInteger(), nullable=False),
     sa.Column('email', sa.String(length=100), nullable=False),
-    sa.Column('full_name', sa.String(length=100), nullable=False),
-    sa.Column('hashed_password', sa.String(length=100), nullable=False),
+    sa.Column('username', sa.String(length=100), nullable=False),
+    sa.Column('password_hash', sa.String(length=100), nullable=False),
+    sa.Column('role', sa.Enum('USER', 'ADMIN', name='user_role_enum', create_constraint=True), nullable=False),
     sa.Column('created_at', sa.DateTime(), nullable=False),
     sa.Column('updated_at', sa.DateTime(), nullable=False),
     sa.PrimaryKeyConstraint('id')
@@ -46,7 +47,7 @@ def upgrade() -> None:
     op.create_index(op.f('ix_users_id'), 'users', ['id'], unique=False)
     op.create_table('admins',
     sa.Column('id', sa.Integer(), nullable=False),
-    sa.Column('user_id', sa.Integer(), nullable=False),
+    sa.Column('user_id', sa.BigInteger(), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['users.id'], ondelete='CASCADE'),
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('user_id')
