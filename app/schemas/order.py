@@ -1,12 +1,13 @@
 from pydantic import BaseModel
-from datetime import datetime
+from datetime import datetime, date
 from typing import List
 
 class OrderItemCreate(BaseModel):
-    menu_item_id: int
+    food_item_id: int
     quantity: int
 
 class OrderCreate(BaseModel):
+    menu_date: date
     items: List[OrderItemCreate]
 
 class OrderItemRead(BaseModel):
@@ -27,4 +28,4 @@ class OrderRead(BaseModel):
     items: List[OrderItemRead] = []
 
     class Config:
-        orm_mode = True
+        from_attributes = True

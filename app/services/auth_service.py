@@ -2,14 +2,12 @@ from fastapi import HTTPException, status
 from sqlalchemy.orm import Session
 
 from app.dal.user_dal import UserDal
-from app.dal.admin_dal import AdminDAL
 from app.auth.auth import hash_password, verify_password, create_access_token
 from app.db.models.user import RoleEnum
 
 class AuthService:
     def __init__(self, db: Session) -> None:
         self.user_dal = UserDal(db)
-        self.admin_dab = AdminDAL(db)
         self.db = db
 
     def register_user(self, *, id: int, email: str, username: str, password: str, role: RoleEnum) -> str:
