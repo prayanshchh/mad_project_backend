@@ -414,4 +414,4 @@ websockets==15.0.1 \
     --hash=sha256:fcd5cf9e305d7b8338754470cf69cf81f420459dbae8a3b40cee57417f4614a7
     # via uvicorn
 
-psycopg2-binary
+psycopg2-binary==2.9.9
